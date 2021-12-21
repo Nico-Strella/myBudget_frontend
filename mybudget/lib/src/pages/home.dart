@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mybudget/src/pages/widgets/action_buttons.dart';
 import 'package:mybudget/src/pages/widgets/body.dart';
+import 'package:mybudget/src/pages/widgets/sub_action_buttons.dart';
 import 'package:mybudget/src/utils/colors.dart';
 
 class Home extends StatelessWidget {
@@ -25,6 +26,14 @@ class Home extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: Body(appProvider: appProvider),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    SubActionButtons(),
+                  ],
                 ),
               ),
             ],
