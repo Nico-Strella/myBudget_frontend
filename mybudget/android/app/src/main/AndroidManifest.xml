@@ -7,7 +7,7 @@
         </intent>
     </queries>
    <application
-        android:label="mybudget"
+        android:label="My Budget"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
