@@ -77,9 +77,10 @@ class _AddIncomeOutcomeFormState extends State<AddIncomeOutcomeForm> {
         children: [
           Text(
             widget.type == 'income' ? 'ADD INCOME' : 'ADD OUTCOME',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w700,
+              color: widget.type == 'income' ? ThemeColors.green : ThemeColors.red,
             ),
           ),
           const SizedBox(
@@ -116,9 +117,16 @@ class _AddIncomeOutcomeFormState extends State<AddIncomeOutcomeForm> {
                     labelText: widget.type == 'income' ? 'Income' : 'Outcome',
                     contentPadding: const EdgeInsets.only(left: 0),
                     prefixText: '฿',
+                    prefixStyle: TextStyle(
+                      fontSize: 18,
+                      color: widget.type == 'income' ? ThemeColors.green : ThemeColors.red,
+                    ),
                   ),
                   textAlign: TextAlign.start,
-                  style: const TextStyle(fontSize: 20),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: widget.type == 'income' ? ThemeColors.green : ThemeColors.red,
+                  ),
                   validator: (String? value) {
                     if (value != null && value.trim().isEmpty) {
                       return widget.type == 'income' ? 'Income is required' : 'Outcome is required';
@@ -140,10 +148,10 @@ class _AddIncomeOutcomeFormState extends State<AddIncomeOutcomeForm> {
                             primary: ThemeColors.blue,
                           ),
                           onPressed: _handleOnSave,
-                          child: Text(
-                            widget.type == 'income' ? 'Add Income' : 'Add Outcome',
+                          child: const Text(
+                            'SAVE',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: ThemeColors.white, fontSize: 20),
+                            style: TextStyle(color: ThemeColors.white, fontSize: 20),
                           ),
                         ),
                       ),

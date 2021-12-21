@@ -46,7 +46,7 @@ class _BodyState extends State<Body> {
                       ? ListView.builder(
                           shrinkWrap: true,
                           itemBuilder: (BuildContext ctxt, int index) {
-                            return CustomListItem(item: widget.appProvider.incomeList[index], isEven: index.isEven, type: "income");
+                            return CustomListItem(item: widget.appProvider.incomeList[index], index: index, type: "income");
                           },
                           itemCount: widget.appProvider.incomeList.length,
                         )
@@ -63,7 +63,7 @@ class _BodyState extends State<Body> {
                       ? ListView.builder(
                           shrinkWrap: true,
                           itemBuilder: (BuildContext ctxt, int index) {
-                            return CustomListItem(item: widget.appProvider.outcomeList[index], isEven: index.isEven, type: "outcome");
+                            return CustomListItem(item: widget.appProvider.outcomeList[index], index: index, type: "outcome");
                           },
                           itemCount: widget.appProvider.outcomeList.length,
                         )

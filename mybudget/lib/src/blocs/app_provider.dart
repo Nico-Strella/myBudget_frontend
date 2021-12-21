@@ -75,19 +75,57 @@ class AppProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void _updateCookies(String type) {
+    switch (type) {
+      case 'income':
+        {
+          List<Map<String, dynamic>> incomeJson = [];
+
+          for (var element in _incomeList) {
+            incomeJson.add(element.toMap());
+          }
+
+          setIncome(json.encode({'incomes': incomeJson}));
+        }
+        break;
+      case 'outcome':
+        {
+          List<Map<String, dynamic>> outcomeJson = [];
+
+          for (var element in _outcomeList) {
+            outcomeJson.add(element.toMap());
+          }
+
+          setOutcome(json.encode({'outcomes': outcomeJson}));
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
   // ------- EDIT -------
 
-  void editIncome(MoneyMovement income) async {
-    print(income);
-    // _incomeList.add(income);
+  void editIncomeOutcome(MoneyMovement editedItem, int index, String type) async {
+    if (type == 'income') {
+      _incomeList[index] = editedItem;
+    } else if (type == 'outcome') {
+      _outcomeList[index] = editedItem;
+    }
 
-    // List<Map<String, dynamic>> incomeJson = [];
+    _updateCookies(type);
+    notifyListeners();
+  }
 
-    // for (var element in _incomeList) {
-    //   incomeJson.add(element.toMap());
-    // }
+  // ------- DELETE -------
 
-    // setIncome(json.encode({'incomes': incomeJson}));
-    // notifyListeners();
+  void deleteIncomeOutcome(int index, String type) {
+    if (type == 'income') {
+      _incomeList.removeAt(index);
+    } else if (type == 'outcome') {
+      _outcomeList.removeAt(index);
+    }
+    _updateCookies(type);
+    notifyListeners();
   }
 }
