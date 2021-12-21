@@ -1,12 +1,13 @@
+import 'package:flutter/services.dart';
 import 'package:mybudget/src/classes/money_movement.dart';
 import 'package:mybudget/src/utils/colors.dart';
 import 'package:mybudget/src/widgets/dialogs/blured_dialog.dart';
 import 'package:flutter/material.dart';
 
-enum AddIncomeAction { ok, cancel }
+enum AddIncomeOutcomeAction { ok, cancel }
 
-class AddIncomeDialog {
-  static Future<List<dynamic>> addIncomeDialog(BuildContext context) async {
+class AddIncomeOutcomeDialog {
+  static Future<List<dynamic>> addIncomeOutcomeDialog(BuildContext context, String type) async {
     final action = await showDialog(
       context: context,
       barrierDismissible: true,
@@ -20,12 +21,14 @@ class AddIncomeDialog {
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  SizedBox(
+                children: [
+                  const SizedBox(
                     height: 10,
                   ),
-                  AddIncomeForm(),
-                  SizedBox(
+                  AddIncomeOutcomeForm(
+                    type: type,
+                  ),
+                  const SizedBox(
                     height: 10,
                   ),
                 ],
@@ -35,29 +38,30 @@ class AddIncomeDialog {
         );
       },
     );
-    return action ?? [AddIncomeAction.cancel];
+    return action ?? [AddIncomeOutcomeAction.cancel];
   }
 }
 
-class AddIncomeForm extends StatefulWidget {
-  const AddIncomeForm({Key? key}) : super(key: key);
+class AddIncomeOutcomeForm extends StatefulWidget {
+  final String type;
+  const AddIncomeOutcomeForm({Key? key, required this.type}) : super(key: key);
 
   @override
-  _AddIncomeFormState createState() => _AddIncomeFormState();
+  _AddIncomeOutcomeFormState createState() => _AddIncomeOutcomeFormState();
 }
 
-class _AddIncomeFormState extends State<AddIncomeForm> {
+class _AddIncomeOutcomeFormState extends State<AddIncomeOutcomeForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _noteController = TextEditingController();
+  final TextEditingController _detailController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
 
   void _handleOnSave() async {
     if (_formKey.currentState!.validate()) {
       Navigator.of(context).pop([
-        AddIncomeAction.ok,
+        AddIncomeOutcomeAction.ok,
         MoneyMovement(
           date: DateTime.now(),
-          detail: _noteController.text,
+          detail: _detailController.text,
           amount: double.parse(_amountController.text),
         ),
       ]);
@@ -71,9 +75,9 @@ class _AddIncomeFormState extends State<AddIncomeForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "ADD INCOME",
-            style: TextStyle(
+          Text(
+            widget.type == 'income' ? 'ADD INCOME' : 'ADD OUTCOME',
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
@@ -87,7 +91,7 @@ class _AddIncomeFormState extends State<AddIncomeForm> {
             child: Column(
               children: [
                 TextFormField(
-                  controller: _noteController,
+                  controller: _detailController,
                   enableSuggestions: false,
                   autocorrect: false,
                   decoration: const InputDecoration(
@@ -105,16 +109,19 @@ class _AddIncomeFormState extends State<AddIncomeForm> {
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                    labelText: 'Income',
-                    contentPadding: EdgeInsets.only(left: 0),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                  ],
+                  decoration: InputDecoration(
+                    labelText: widget.type == 'income' ? 'Income' : 'Outcome',
+                    contentPadding: const EdgeInsets.only(left: 0),
                     prefixText: '฿',
                   ),
                   textAlign: TextAlign.start,
                   style: const TextStyle(fontSize: 20),
                   validator: (String? value) {
                     if (value != null && value.trim().isEmpty) {
-                      return "Income is required";
+                      return widget.type == 'income' ? 'Income is required' : 'Outcome is required';
                     }
                     return null;
                   },
@@ -133,10 +140,10 @@ class _AddIncomeFormState extends State<AddIncomeForm> {
                             primary: ThemeColors.blue,
                           ),
                           onPressed: _handleOnSave,
-                          child: const Text(
-                            "Add Income",
+                          child: Text(
+                            widget.type == 'income' ? 'Add Income' : 'Add Outcome',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: ThemeColors.white, fontSize: 20),
+                            style: const TextStyle(color: ThemeColors.white, fontSize: 20),
                           ),
                         ),
                       ),

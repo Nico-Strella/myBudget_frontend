@@ -27,7 +27,7 @@ class _AddButtonState extends State<AddButton> {
         primary: widget.bgColor,
         textStyle: const TextStyle(fontSize: 20),
       ),
-      onPressed: () => widget.callback(context),
+      onPressed: () => widget.callback(),
       child: AutoSizeText(
         'Add ${widget.text}',
         textAlign: TextAlign.center,

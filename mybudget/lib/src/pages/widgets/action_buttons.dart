@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:mybudget/src/blocs/Provider.dart';
+import 'package:mybudget/src/blocs/app_provider.dart';
 import 'package:mybudget/src/utils/colors.dart';
 import 'package:mybudget/src/widgets/buttons/add_button.dart';
-import 'package:mybudget/src/widgets/dialogs/add_income_dialog.dart';
-import 'package:provider/provider.dart';
+import 'package:mybudget/src/widgets/dialogs/add_income__outcome_dialog.dart';
 
 class ActionButtons extends StatelessWidget {
-  final appProvider;
+  final AppProvider appProvider;
   const ActionButtons({Key? key, required this.appProvider}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    void onPressIncome(BuildContext context) async {
-      List<dynamic> response = await AddIncomeDialog.addIncomeDialog(context);
-      if (response.length > 1 && response[0] == AddIncomeAction.ok) {
+    void onPressIncome() async {
+      List<dynamic> response = await AddIncomeOutcomeDialog.addIncomeOutcomeDialog(context, "income");
+      if (response.length > 1 && response[0] == AddIncomeOutcomeAction.ok) {
         appProvider.addIncome(response[1]);
       }
     }
 
-    void onPressOutcome() {}
+    void onPressOutcome() async {
+      List<dynamic> response = await AddIncomeOutcomeDialog.addIncomeOutcomeDialog(context, "outcome");
+      if (response.length > 1 && response[0] == AddIncomeOutcomeAction.ok) {
+        appProvider.addOutcome(response[1]);
+      }
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

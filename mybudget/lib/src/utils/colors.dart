@@ -7,4 +7,5 @@ class ThemeColors {
   static const green = Color(0xFF17C3B2);
   static const blue = Color(0xFF227C9D);
   static const black = Color(0xFF373F51);
+  static const transparentBlue = Color(0x07227C9D);
 }
