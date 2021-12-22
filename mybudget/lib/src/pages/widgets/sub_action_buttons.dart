@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:mybudget/src/utils/colors.dart';
 import 'package:mybudget/src/utils/csv_converter.dart';
@@ -21,29 +22,44 @@ class SubActionButtons extends StatelessWidget {
 
       // INCOMES
       String incomes = await getIncomes();
-      dynamic incomeList = json.decode(incomes)['incomes'];
-      final incomeFilePath = "$appDocumentsDirectory/IncomeLogs_$today.csv";
-      final incomeFile = File(incomeFilePath);
+      if (incomes != "") {
+        dynamic incomeList = json.decode(incomes)['incomes'];
+        final incomeFilePath = "$appDocumentsDirectory/IncomeLogs_$today.csv";
+        final incomeFile = File(incomeFilePath);
+        String incomeCsv = CsvConverter.buildCsv(data: incomeList);
+        await incomeFile.writeAsString(incomeCsv);
+        if (incomeCsv != "") {
+          attachmentPaths.add(incomeFilePath);
+        }
+      }
 
       // OUTCOMES
       String outcomes = await getOutcomes();
-      dynamic outcomeList = json.decode(outcomes)['outcomes'];
-      final outcomeFilePath = "$appDocumentsDirectory/OutcomeLogs_$today.csv";
-      final outcomeFile = File(outcomeFilePath);
-
-      String incomeCsv = CsvConverter.buildCsv(data: incomeList);
-      await incomeFile.writeAsString(incomeCsv);
-      if (incomeCsv != "") {
-        attachmentPaths.add(incomeFilePath);
+      if (outcomes != "") {
+        dynamic outcomeList = json.decode(outcomes)['outcomes'];
+        final outcomeFilePath = "$appDocumentsDirectory/OutcomeLogs_$today.csv";
+        final outcomeFile = File(outcomeFilePath);
+        String outcomeCsv = CsvConverter.buildCsv(data: outcomeList);
+        await outcomeFile.writeAsString(outcomeCsv);
+        if (outcomeCsv != "") {
+          attachmentPaths.add(outcomeFilePath);
+        }
       }
 
-      String outcomeCsv = CsvConverter.buildCsv(data: outcomeList);
-      await outcomeFile.writeAsString(outcomeCsv);
-      if (outcomeCsv != "") {
-        attachmentPaths.add(outcomeFilePath);
+      if (attachmentPaths.isNotEmpty) {
+        EmailClient.sendEmail(attachmentPaths: attachmentPaths);
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(seconds: 2),
+          content: AutoSizeText(
+            'There is no data to export by email.',
+            style: TextStyle(
+              color: ThemeColors.white,
+            ),
+          ),
+        ));
       }
-
-      EmailClient.sendEmail(attachmentPaths: attachmentPaths);
     }
 
     return SizedBox(
