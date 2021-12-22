@@ -12,6 +12,7 @@ class MyBudget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _appProvider = Provider.of<AppProvider>(context);
     return Container(
+      height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -23,16 +24,20 @@ class MyBudget extends StatelessWidget {
         children: [
           const AutoSizeText(
             'My Budget:',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: ThemeColors.blue, letterSpacing: -1),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: ThemeColors.blue, letterSpacing: -1),
+            maxLines: 2,
           ),
           const SizedBox(
             width: 10,
           ),
-          Text(
-            '฿ ${NumberFormat("#,##0.00", "en_US").format(_appProvider.myBudget)}',
-            style: TextStyle(
-              color: _appProvider.myBudget < 0 ? ThemeColors.red : ThemeColors.green,
-              fontSize: 20,
+          Expanded(
+            child: AutoSizeText(
+              '฿ ${NumberFormat("#,##0.00", "en_US").format(_appProvider.myBudget)}',
+              style: TextStyle(
+                color: _appProvider.myBudget < 0 ? ThemeColors.red : ThemeColors.green,
+                fontSize: 20,
+              ),
+              maxLines: 1,
             ),
           ),
         ],

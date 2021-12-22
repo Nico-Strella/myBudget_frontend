@@ -46,23 +46,26 @@ class SubActionButtons extends StatelessWidget {
       EmailClient.sendEmail(attachmentPaths: attachmentPaths);
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.all(10),
-            primary: ThemeColors.blue,
-            textStyle: const TextStyle(fontSize: 20),
+    return SizedBox(
+      height: 60,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.all(10),
+              primary: ThemeColors.blue,
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: () => sendEmail(),
+            child: const Icon(
+              Icons.email,
+              size: 40,
+              color: ThemeColors.white,
+            ),
           ),
-          onPressed: () => sendEmail(),
-          child: const Icon(
-            Icons.email,
-            size: 40,
-            color: ThemeColors.white,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

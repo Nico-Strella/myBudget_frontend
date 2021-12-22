@@ -43,7 +43,10 @@ class Home extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
-                      MyBudget(),
+                      Expanded(child: MyBudget()),
+                      SizedBox(
+                        width: 10,
+                      ),
                       SubActionButtons(),
                     ],
                   ),

@@ -26,27 +26,30 @@ class ActionButtons extends StatelessWidget {
       }
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: AddButton(
-            text: 'Income',
-            bgColor: ThemeColors.green,
-            callback: onPressIncome,
+    return SizedBox(
+      height: 70,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: AddButton(
+              text: 'Income',
+              bgColor: ThemeColors.green,
+              callback: onPressIncome,
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Expanded(
-          child: AddButton(
-            text: 'Outcome',
-            bgColor: ThemeColors.red,
-            callback: onPressOutcome,
+          const SizedBox(
+            width: 10,
           ),
-        ),
-      ],
+          Expanded(
+            child: AddButton(
+              text: 'Outcome',
+              bgColor: ThemeColors.red,
+              callback: onPressOutcome,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

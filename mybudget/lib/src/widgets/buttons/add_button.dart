@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:mybudget/src/utils/helper.dart';
 
 class AddButton extends StatefulWidget {
   final Color bgColor;
@@ -31,6 +32,7 @@ class _AddButtonState extends State<AddButton> {
       child: AutoSizeText(
         'Add ${widget.text}',
         textAlign: TextAlign.center,
+        style: TextStyle(fontSize: getFont(context, scaleFactor: 1.4)),
       ),
     );
   }
