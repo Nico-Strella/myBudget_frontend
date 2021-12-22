@@ -92,7 +92,7 @@ class AppProvider with ChangeNotifier {
   }
 
   void _updateCookies(String type) {
-    switch (type) {
+    switch (type.toLowerCase()) {
       case 'income':
         {
           List<Map<String, dynamic>> incomeJson = [];
@@ -123,11 +123,11 @@ class AppProvider with ChangeNotifier {
   // ------- EDIT -------
 
   void editIncomeOutcome(MoneyMovement editedItem, int index, String type) async {
-    if (type == 'income') {
+    if (type.toLowerCase() == 'income') {
       _totalIncome += editedItem.amount - _incomeList[index].amount;
 
       _incomeList[index] = editedItem;
-    } else if (type == 'outcome') {
+    } else if (type.toLowerCase() == 'outcome') {
       _totalOutcome += editedItem.amount - _outcomeList[index].amount;
 
       _outcomeList[index] = editedItem;
@@ -142,10 +142,10 @@ class AppProvider with ChangeNotifier {
   // ------- DELETE -------
 
   void deleteIncomeOutcome(int index, String type) {
-    if (type == 'income') {
+    if (type.toLowerCase() == 'income') {
       _totalIncome -= _incomeList[index].amount;
       _incomeList.removeAt(index);
-    } else if (type == 'outcome') {
+    } else if (type.toLowerCase() == 'outcome') {
       _totalOutcome -= _outcomeList[index].amount;
       _outcomeList.removeAt(index);
     }
@@ -155,10 +155,10 @@ class AppProvider with ChangeNotifier {
   }
 
   void deleteAllIncomeOutcome({required String type}) {
-    if (type == 'Income') {
+    if (type.toLowerCase() == 'income') {
       _totalIncome = 0;
       _incomeList.clear();
-    } else if (type == 'Outcome') {
+    } else if (type.toLowerCase() == 'outcome') {
       _totalOutcome = 0;
       _outcomeList.clear();
     }
