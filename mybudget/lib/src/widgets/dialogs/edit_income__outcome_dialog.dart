@@ -106,6 +106,7 @@ class _EditIncomeOutcomeFormState extends State<EditIncomeOutcomeForm> {
                   controller: _detailController,
                   enableSuggestions: false,
                   autocorrect: false,
+                  textCapitalization: TextCapitalization.sentences,
                   decoration: const InputDecoration(
                     labelText: 'Detail',
                     contentPadding: EdgeInsets.only(left: 0),

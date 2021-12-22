@@ -38,40 +38,54 @@ class _BodyState extends State<Body> {
               ),
               color: ThemeColors.white,
             ),
-            child: Column(
-              children: [
-                Expandable(
-                  text: 'Income',
-                  child: widget.appProvider.incomeList.isNotEmpty
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext ctxt, int index) {
-                            return CustomListItem(item: widget.appProvider.incomeList[index], index: index, type: "income");
-                          },
-                          itemCount: widget.appProvider.incomeList.length,
-                        )
-                      : const Center(
-                          child: Text('No Incomes', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-                        ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expandable(
-                  text: 'Outcome',
-                  child: widget.appProvider.outcomeList.isNotEmpty
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext ctxt, int index) {
-                            return CustomListItem(item: widget.appProvider.outcomeList[index], index: index, type: "outcome");
-                          },
-                          itemCount: widget.appProvider.outcomeList.length,
-                        )
-                      : const Center(
-                          child: Text('No Outcomes', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-                        ),
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Expandable(
+                    text: 'Income',
+                    appProvider: widget.appProvider,
+                    child: widget.appProvider.incomeList.isNotEmpty
+                        ? Center(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext ctxt, int index) {
+                                return CustomListItem(item: widget.appProvider.incomeList[index], index: index, type: "income");
+                              },
+                              itemCount: widget.appProvider.incomeList.length,
+                            ),
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Center(
+                              child: Text('No Incomes', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expandable(
+                    text: 'Outcome',
+                    appProvider: widget.appProvider,
+                    child: widget.appProvider.outcomeList.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext ctxt, int index) {
+                              return CustomListItem(item: widget.appProvider.outcomeList[index], index: index, type: "outcome");
+                            },
+                            itemCount: widget.appProvider.outcomeList.length,
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Center(
+                              child: Text('No Outcomes', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                  ),
+                ],
+              ),
             ),
           );
   }

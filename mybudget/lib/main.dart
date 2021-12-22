@@ -11,7 +11,7 @@ void main() {
         title: 'My Budget',
         debugShowCheckedModeBanner: false,
         home: Consumer<AppProvider>(
-          builder: (ctx, provider, child) => Home(appProvider: provider, ctx: ctx),
+          builder: (ctx, provider, child) => Home(appProvider: provider),
         ),
       ),
     ),

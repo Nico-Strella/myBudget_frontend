@@ -40,6 +40,7 @@ class _CustomListItemState extends State<CustomListItem> with SingleTickerProvid
     void editItem() async {
       if (isDeleteIconShown) {
         setState(() {
+          _animationController.reverse();
           isDeleteIconShown = false;
         });
       }
@@ -51,6 +52,7 @@ class _CustomListItemState extends State<CustomListItem> with SingleTickerProvid
 
     void _deleteItem() async {
       setState(() {
+        _animationController.reverse();
         isDeleteIconShown = false;
       });
       Provider.of<AppProvider>(context, listen: false).deleteIncomeOutcome(widget.index, widget.type);
