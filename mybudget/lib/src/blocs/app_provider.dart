@@ -5,32 +5,36 @@ import 'package:mybudget/src/classes/money_movement.dart';
 import 'package:mybudget/src/utils/preferences.dart';
 
 class AppProvider with ChangeNotifier {
-  final List<MoneyMovement> _incomeList = [];
-  final List<MoneyMovement> _outcomeList = [];
+  List<MoneyMovement> _incomeList = [];
+  List<MoneyMovement> _outcomeList = [];
   double _totalIncome = 0;
   double _totalOutcome = 0;
   double _myBudget = 0;
+  DateTime? _selectedFilter;
 
   List<MoneyMovement> get incomeList => _incomeList;
   List<MoneyMovement> get outcomeList => _outcomeList;
   double get totalIncome => _totalIncome;
   double get totalOutcome => _totalOutcome;
   double get myBudget => _myBudget;
+  DateTime? get selectedFilter => _selectedFilter;
 
-  Future<void> init() async {
+  Future<void> init({filter}) async {
     String incomes = await getIncomes();
     if (incomes.isNotEmpty) {
       dynamic savedIncomeList = incomes.isEmpty ? [] : json.decode(incomes)['incomes'];
 
-      if (savedIncomeList != null && _incomeList.isEmpty) {
+      if (savedIncomeList != null) {
         for (var element in savedIncomeList) {
           MoneyMovement mappedElement = MoneyMovement(
             date: DateTime.fromMillisecondsSinceEpoch(element['date']),
             detail: element['detail'],
             amount: element['amount'],
           );
-          _totalIncome += mappedElement.amount;
-          _incomeList.add(mappedElement);
+          if (filter == null || (filter != null && filter.year == mappedElement.date.year && filter.month == mappedElement.date.month)) {
+            _totalIncome += mappedElement.amount;
+            _incomeList.add(mappedElement);
+          }
         }
       }
     }
@@ -39,15 +43,17 @@ class AppProvider with ChangeNotifier {
     if (outcomes.isNotEmpty) {
       dynamic savedOutcomeList = outcomes.isEmpty ? [] : json.decode(outcomes)['outcomes'];
 
-      if (savedOutcomeList != null && _outcomeList.isEmpty) {
+      if (savedOutcomeList != null) {
         for (var element in savedOutcomeList) {
           MoneyMovement mappedElement = MoneyMovement(
             date: DateTime.fromMillisecondsSinceEpoch(element['date']),
             detail: element['detail'],
             amount: element['amount'],
           );
-          _totalOutcome += mappedElement.amount;
-          _outcomeList.add(mappedElement);
+          if (filter == null || (filter != null && filter.year == mappedElement.date.year && filter.month == mappedElement.date.month)) {
+            _totalOutcome += mappedElement.amount;
+            _outcomeList.add(mappedElement);
+          }
         }
       }
     }
@@ -165,5 +171,31 @@ class AppProvider with ChangeNotifier {
     _myBudget = _totalIncome - _totalOutcome;
     _updateCookies(type);
     notifyListeners();
+  }
+
+  // ------- FILTER -------
+
+  Future<void> setFilter(DateTime dateTime) async {
+    _selectedFilter = dateTime;
+    _incomeList = [];
+    _outcomeList = [];
+    _totalIncome = 0;
+    _totalOutcome = 0;
+    _myBudget = 0;
+    notifyListeners();
+
+    await init(filter: dateTime);
+  }
+
+  Future<void> clearFilter() async {
+    _selectedFilter = null;
+    _incomeList = [];
+    _outcomeList = [];
+    _totalIncome = 0;
+    _totalOutcome = 0;
+    _myBudget = 0;
+    notifyListeners();
+
+    await init();
   }
 }

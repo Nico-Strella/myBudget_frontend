@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mybudget/src/blocs/app_provider.dart';
 import 'package:mybudget/src/pages/widgets/action_buttons.dart';
 import 'package:mybudget/src/pages/widgets/body.dart';
+import 'package:mybudget/src/pages/widgets/filter.dart';
 import 'package:mybudget/src/pages/widgets/my_budget.dart';
 import 'package:mybudget/src/pages/widgets/sub_action_buttons.dart';
 import 'package:mybudget/src/pages/widgets/total_income_outcome.dart';
@@ -24,6 +26,34 @@ class Home extends StatelessWidget {
               const ActionButtons(),
               const SizedBox(
                 height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: appProvider.selectedFilter == null
+                        ? Container()
+                        : Text(
+                            DateFormat.yMMMM().format(
+                              appProvider.selectedFilter ?? DateTime.now(),
+                            ),
+                            style: const TextStyle(color: ThemeColors.blue, fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const DateFilter()),
+                      );
+                    },
+                    style: TextButton.styleFrom(backgroundColor: ThemeColors.green),
+                    child: const Text(
+                      'Filter',
+                      style: TextStyle(color: ThemeColors.white, fontSize: 18),
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: SingleChildScrollView(
