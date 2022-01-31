@@ -19,8 +19,12 @@ class AppProvider with ChangeNotifier {
   double get myBudget => _myBudget;
   DateTime? get selectedFilter => _selectedFilter;
 
-  Future<void> init({filter}) async {
+  Future<void> init() async {
     String incomes = await getIncomes();
+    String preferredFilter = await getPreferredFilter();
+    if (preferredFilter != '') {
+      _selectedFilter = DateTime.fromMillisecondsSinceEpoch(int.parse(preferredFilter));
+    }
     if (incomes.isNotEmpty) {
       dynamic savedIncomeList = incomes.isEmpty ? [] : json.decode(incomes)['incomes'];
 
@@ -31,7 +35,7 @@ class AppProvider with ChangeNotifier {
             detail: element['detail'],
             amount: element['amount'],
           );
-          if (filter == null || (filter != null && filter.year == mappedElement.date.year && filter.month == mappedElement.date.month)) {
+          if (_selectedFilter == null || (_selectedFilter?.year == mappedElement.date.year && _selectedFilter?.month == mappedElement.date.month)) {
             _totalIncome += mappedElement.amount;
             _incomeList.add(mappedElement);
           }
@@ -50,7 +54,7 @@ class AppProvider with ChangeNotifier {
             detail: element['detail'],
             amount: element['amount'],
           );
-          if (filter == null || (filter != null && filter.year == mappedElement.date.year && filter.month == mappedElement.date.month)) {
+          if (_selectedFilter == null || (_selectedFilter?.year == mappedElement.date.year && _selectedFilter?.month == mappedElement.date.month)) {
             _totalOutcome += mappedElement.amount;
             _outcomeList.add(mappedElement);
           }
@@ -176,6 +180,7 @@ class AppProvider with ChangeNotifier {
   // ------- FILTER -------
 
   Future<void> setFilter(DateTime dateTime) async {
+    await setPreferredFilter(dateTime.millisecondsSinceEpoch.toString());
     _selectedFilter = dateTime;
     _incomeList = [];
     _outcomeList = [];
@@ -184,10 +189,11 @@ class AppProvider with ChangeNotifier {
     _myBudget = 0;
     notifyListeners();
 
-    await init(filter: dateTime);
+    await init();
   }
 
   Future<void> clearFilter() async {
+    await removePreferredFilter();
     _selectedFilter = null;
     _incomeList = [];
     _outcomeList = [];

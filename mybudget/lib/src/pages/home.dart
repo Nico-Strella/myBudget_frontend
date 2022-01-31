@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DateFilter()),
+                        MaterialPageRoute(builder: (context) => DateFilter(appProvider: appProvider)),
                       );
                     },
                     style: TextButton.styleFrom(backgroundColor: ThemeColors.green),

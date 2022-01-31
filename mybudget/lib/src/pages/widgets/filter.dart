@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 import 'package:mybudget/src/blocs/app_provider.dart';
 import 'package:mybudget/src/utils/colors.dart';
-import 'package:provider/provider.dart';
 
 class DateFilter extends StatefulWidget {
-  const DateFilter({Key? key}) : super(key: key);
+  final AppProvider appProvider;
+  const DateFilter({Key? key, required this.appProvider}) : super(key: key);
 
   @override
   State<DateFilter> createState() => _DateFilterState();
@@ -34,7 +34,7 @@ class _DateFilterState extends State<DateFilter> {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      await Provider.of<AppProvider>(context, listen: false).clearFilter();
+                      await widget.appProvider.clearFilter();
                       Navigator.pop(context);
                     },
                     child: const Text('Clear Filter'),
@@ -42,13 +42,13 @@ class _DateFilterState extends State<DateFilter> {
                 ],
               ),
               dp.MonthPicker.single(
-                selectedDate: Provider.of<AppProvider>(context, listen: false).selectedFilter ?? DateTime.now(),
+                selectedDate: widget.appProvider.selectedFilter ?? DateTime.now(),
                 firstDate: DateTime(2021),
                 lastDate: DateTime.now(),
                 onChanged: (dateTime) {
                   setState(() {
-                    Provider.of<AppProvider>(context, listen: false).setFilter(dateTime);
-                    Timer(const Duration(milliseconds: 50), () {
+                    widget.appProvider.setFilter(dateTime);
+                    Timer(const Duration(milliseconds: 100), () {
                       Navigator.pop(context);
                     });
                   });
