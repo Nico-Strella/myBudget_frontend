@@ -23,4 +23,8 @@ A simple personal App that I made to manage my budget by registering my incomes 
 ### Filtered Home
 ![Filtered Home](https://user-images.githubusercontent.com/29281712/151762414-006b2449-eefe-41f1-99e5-58be92bdf258.jpg)
 
-_NOTE: This is an app that I made for fun for my personal use. Feel free to fork the code and make the changes that you want for you._
+_NOTE: This is an app that I made for fun for my personal use. Feel free to fork the code and make the changes that you want for you. This app run on flutter 2._
+
+_To run it just clone the project, go to mybudget folder and once there execute the command: 'flutter run' or you can build the project with 'flutter build apk' for android and install it in your android device_
+
+
